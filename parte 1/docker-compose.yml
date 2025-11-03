@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  node1:
+    build: .
+    container_name: kv_node1
+    environment:
+      - NODE_ID=node1
+      - MULTICAST_GROUP=239.0.0.1
+      - MULTICAST_PORT=5007
+      - MULTICAST_TTL=1
+    stdin_open: true
+    tty: true
+    networks:
+      - mnet
+  node2:
+    build: .
+    container_name: kv_node2
+    environment:
+      - NODE_ID=node2
+      - MULTICAST_GROUP=239.0.0.1
+      - MULTICAST_PORT=5007
+      - MULTICAST_TTL=1
+    stdin_open: true
+    tty: true
+    networks:
+      - mnet
+  node3:
+    build: .
+    container_name: kv_node3
+    environment:
+      - NODE_ID=node3
+      - MULTICAST_GROUP=239.0.0.1
+      - MULTICAST_PORT=5007
+      - MULTICAST_TTL=1
+    stdin_open: true
+    tty: true
+    networks:
+      - mnet
+
+networks:
+  mnet:
+    driver: bridge
