@@ -1,0 +1,72 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: kv4_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - kv4net
+
+  leader:
+    build: .
+    container_name: kv4_leader
+    environment:
+      - NODE_ID=leader
+      - ROLE=leader
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - UPDATES_EXCHANGE=kv4_updates
+      - RPC_PORT=50071
+    depends_on:
+      - rabbitmq
+    ports:
+      - "127.0.0.1:50171:50071"
+    stdin_open: true
+    tty: true
+    networks:
+      - kv4net
+
+  follower1:
+    build: .
+    container_name: kv4_follower1
+    environment:
+      - NODE_ID=follower1
+      - ROLE=follower
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - UPDATES_EXCHANGE=kv4_updates
+      - RPC_PORT=50072
+    depends_on:
+      - rabbitmq
+      - leader
+    ports:
+      - "127.0.0.1:50172:50072"
+    stdin_open: true
+    tty: true
+    networks:
+      - kv4net
+
+  follower2:
+    build: .
+    container_name: kv4_follower2
+    environment:
+      - NODE_ID=follower2
+      - ROLE=follower
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - UPDATES_EXCHANGE=kv4_updates
+      - RPC_PORT=50073
+    depends_on:
+      - rabbitmq
+      - leader
+    ports:
+      - "127.0.0.1:50173:50073"
+    stdin_open: true
+    tty: true
+    networks:
+      - kv4net
+
+networks:
+  kv4net:
+    driver: bridge
+

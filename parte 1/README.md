@@ -77,7 +77,7 @@ Dica: repita o experimento várias vezes para observar diferentes ordens.
 - `logging` com `LoggerAdapter` injeta `node_id` no formato dos logs.
 
 ## Tratamento de Erros e Guard Clauses
-- Deserialização/validação falhou → descarta a mensagem e loga `warning`.
+- Desserialização/validação falhou → descarta a mensagem e loga `warning`.
 - Campos essenciais ausentes (`command_type`, `sender_id`, `message_uuid`) → descarta e loga.
 - `SET` sem `key` → descarta e loga.
 - `GET` sem `key` → descarta e loga.

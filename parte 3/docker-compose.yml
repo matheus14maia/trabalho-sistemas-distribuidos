@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: kv3_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - kv3net
+
+  sequencer:
+    build: .
+    container_name: kv3_sequencer
+    command: ["sh", "-c", "sleep 5 && python sequencer.py"]
+    environment:
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - TO_SEQ_QUEUE=kv3_to_sequencer
+      - ORDERED_EXCHANGE=kv3_ordered
+    depends_on:
+      - rabbitmq
+    networks:
+      - kv3net
+
+  node1:
+    build: .
+    container_name: kv3_node1
+    environment:
+      - NODE_ID=node1
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - TO_SEQ_QUEUE=kv3_to_sequencer
+      - ORDERED_EXCHANGE=kv3_ordered
+      - RPC_PORT=50061
+    depends_on:
+      - rabbitmq
+      - sequencer
+    ports:
+      - "50061:50061"
+    stdin_open: true
+    tty: true
+    networks:
+      - kv3net
+
+  node2:
+    build: .
+    container_name: kv3_node2
+    environment:
+      - NODE_ID=node2
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - TO_SEQ_QUEUE=kv3_to_sequencer
+      - ORDERED_EXCHANGE=kv3_ordered
+      - RPC_PORT=50062
+    depends_on:
+      - rabbitmq
+      - sequencer
+    ports:
+      - "50062:50062"
+    stdin_open: true
+    tty: true
+    networks:
+      - kv3net
+
+  node3:
+    build: .
+    container_name: kv3_node3
+    environment:
+      - NODE_ID=node3
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - TO_SEQ_QUEUE=kv3_to_sequencer
+      - ORDERED_EXCHANGE=kv3_ordered
+      - RPC_PORT=50063
+    depends_on:
+      - rabbitmq
+      - sequencer
+    ports:
+      - "50063:50063"
+    stdin_open: true
+    tty: true
+    networks:
+      - kv3net
+
+networks:
+  kv3net:
+    driver: bridge
+

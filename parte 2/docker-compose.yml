@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: kv2_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - kvnet
+
+  node1:
+    build: .
+    container_name: kv2_node1
+    environment:
+      - NODE_ID=node1
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - EXCHANGE_NAME=kv_commands
+      - RPC_PORT=50051
+    depends_on:
+      - rabbitmq
+    ports:
+      - "50051:50051"
+    stdin_open: true
+    tty: true
+    networks:
+      - kvnet
+
+  node2:
+    build: .
+    container_name: kv2_node2
+    environment:
+      - NODE_ID=node2
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - EXCHANGE_NAME=kv_commands
+      - RPC_PORT=50052
+    depends_on:
+      - rabbitmq
+    ports:
+      - "50052:50052"
+    stdin_open: true
+    tty: true
+    networks:
+      - kvnet
+
+  node3:
+    build: .
+    container_name: kv2_node3
+    environment:
+      - NODE_ID=node3
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - EXCHANGE_NAME=kv_commands
+      - RPC_PORT=50053
+    depends_on:
+      - rabbitmq
+    ports:
+      - "50053:50053"
+    stdin_open: true
+    tty: true
+    networks:
+      - kvnet
+
+networks:
+  kvnet:
+    driver: bridge
+

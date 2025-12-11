@@ -1,0 +1,4 @@
+pydantic>=2.5,<3
+aio-pika>=9.4
+grpcio>=1.60
+
