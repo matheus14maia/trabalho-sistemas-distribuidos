@@ -28,12 +28,12 @@ docker compose up -d --build
 Serviços:
 - `rabbitmq` (porta 5672; console em 15672).
 - `sequencer` (atribui seq e publica ordenado).
-- `kv3_node1` (gRPC 50061), `kv3_node2` (50062), `kv3_node3` (50063).
+- `kv3_node1` (gRPC 50081), `kv3_node2` (50082), `kv3_node3` (50083).
 
 ### Usando o cliente CLI
 Envie comandos via RPC para qualquer nó:
 ```bash
-docker exec -it kv3_node1 python client_cli.py --target kv3_node1:50061
+docker exec -it kv3_node1 python client_cli.py --target kv3_node1:50081
 # exemplos dentro do CLI
 SET x 1
 SET x 2
