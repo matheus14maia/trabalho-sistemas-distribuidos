@@ -31,12 +31,10 @@ services:
       - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
       - TO_SEQ_QUEUE=kv3_to_sequencer
       - ORDERED_EXCHANGE=kv3_ordered
-      - RPC_PORT=50061
+      - RPC_PORT=50081
     depends_on:
       - rabbitmq
       - sequencer
-    ports:
-      - "50061:50061"
     stdin_open: true
     tty: true
     networks:
@@ -50,12 +48,10 @@ services:
       - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
       - TO_SEQ_QUEUE=kv3_to_sequencer
       - ORDERED_EXCHANGE=kv3_ordered
-      - RPC_PORT=50062
+      - RPC_PORT=50082
     depends_on:
       - rabbitmq
       - sequencer
-    ports:
-      - "50062:50062"
     stdin_open: true
     tty: true
     networks:
@@ -69,12 +65,10 @@ services:
       - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
       - TO_SEQ_QUEUE=kv3_to_sequencer
       - ORDERED_EXCHANGE=kv3_ordered
-      - RPC_PORT=50063
+      - RPC_PORT=50083
     depends_on:
       - rabbitmq
       - sequencer
-    ports:
-      - "50063:50063"
     stdin_open: true
     tty: true
     networks:
